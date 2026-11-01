@@ -31,13 +31,13 @@
   сверено с `content/legal.json` (`verified: true`).
 
 - **272 тыс.** несовершеннолетних вовлечены в подозрительные операции в 2025 г. (+10%); операций — 3,4 млн (+70%)
-  (Росфинмониторинг, пересказ — [x-compliance.ru](https://x-compliance.ru/publications/risk-management/podrostki-stanovyatsya-novoi-mishenu-dlya-finansovyh-moshennikov-chislo-nesovershennoletnih-dropperov-vyroslo-v-shest-raz-rosfinmonitoring)).
+  (Росфинмониторинг через ЦБ, пересказ: [mel.fm, 04.09.2026](https://mel.fm/novosti/8972560-kazhdy-pyaty-dropper-v-rossii-okazalsya-nesovershennoletnim--tsentrobank)).
 - **×6** — 23,8 тыс. жалоб в ЦБ на отказы в операциях и ограничения счетов за янв.–июль 2026 против 4,1 тыс. в 2023
   (проект «Основных направлений развития финансового рынка на 2027–2029 гг.», Банк России —
   [investfuture.ru](https://investfuture.ru/articles/ts-b-poluchil-23-8-tys-zhalob-na-otkaz-v-operatsiyakh-za-yanvar-iyul-37944824)).
   Первоисточник — сам документ ЦБ на cbr.ru.
 
-- **> 35 млн ₽** похитили в Омской области через чужие «Пушкинские карты» ([mel.fm](https://mel.fm/novosti/6039584-v-omskoy-oblasti-moshenniki-ispolzuya-chuzhiye-pushkinskiye-karty-pokhitili-boleye-35-mln-rubley));
+- **> 35 млн ₽** (дело 2023 года, схема известна с тех пор) похитили в Омской области через чужие «Пушкинские карты» ([mel.fm](https://mel.fm/novosti/6039584-v-omskoy-oblasti-moshenniki-ispolzuya-chuzhiye-pushkinskiye-karty-pokhitili-boleye-35-mln-rubley));
   схема «выкупа»: у студентов покупают доступ к картам и продают по ним билеты сами себе ([bfm.ru](https://www.bfm.ru/news/520764)).
 
 > Сверено 12.10.2026 по публикациям СМИ со ссылкой на ВТБ и ЦБ; пресс-релизов-первоисточников в открытом доступе не нашли.

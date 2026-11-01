@@ -3,7 +3,7 @@
     pip install playwright && playwright install chromium ffmpeg
     docker compose up                       # сайт на http://localhost:5173
     python docs/video/record_demo.py docs/video/raw
-    ffmpeg -i docs/video/raw/*.webm -c:v libx264 -crf 26 -pix_fmt yuv420p -movflags +faststart docs/video/demo_draft.mp4
+    ffmpeg -i docs/video/raw/*.webm -c:v libx264 -crf 26 -pix_fmt yuv420p -movflags +faststart docs/video/demo.mp4
 
 Сценарии проигрываются сами: в окнах жмётся главная кнопка, на экране перехвата — пауза, к «Безопасному выходу»
 прикрепляется chat_evidence.png. Тексты подписей — в вызовах play() ниже.

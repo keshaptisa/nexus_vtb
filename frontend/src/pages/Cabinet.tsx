@@ -21,6 +21,7 @@ import { PayModal, TopUpModal, TransferModal } from '../components/ActionModals'
 import AccountSwitcher from '../components/AccountSwitcher'
 import Assistant, { type Ask, type Nudge } from '../components/Assistant'
 import BankSees from '../components/BankSees'
+import DemoMetrics from '../components/DemoMetrics'
 import { BirthdayWindow, BridgeWindow, GoalsModal, GoalWindow, PushkinWindow } from '../components/ChannelWindows'
 import Icon from '../components/Icon'
 import Logo from '../components/Logo'
@@ -126,6 +127,12 @@ export default function Cabinet() {
     scenarioOn.current = scenario !== null
   }, [scenario])
 
+  // Открытие «Безопасного выхода» — знаменатель конверсии «Я влип» → действие (docs/business/metrics.md)
+  const sosOpen = modal?.kind === 'sos'
+  useEffect(() => {
+    if (sosOpen) api.metricEvent(personaId, 'safe_exit_opened').catch(() => {})
+  }, [sosOpen, personaId])
+
   // Пока идёт сценарий, «Что видит банк» получает риск с сервера потоком (SSE) — в том числе после
   // действий в другой вкладке. Пропал поток — панель всё равно обновится после каждого действия.
   const streaming = scenario !== null
@@ -199,6 +206,10 @@ export default function Cabinet() {
 
   const onIntercept = async (action: InterceptAction) => {
     if (modal?.kind !== 'intercept') return
+    // Перевод не ушёл — это отмена после перехвата (метрика docs/business/metrics.md)
+    if (action === 'cancel' || action === 'call_bank' || action === 'offered_job') {
+      api.metricEvent(personaId, 'intercept_cancelled', action).catch(() => {})
+    }
     if (action === 'cancel') {
       setModal(null)
       notify('Перевод отменён')
@@ -605,6 +616,7 @@ export default function Cabinet() {
             </button>
 
             <BankSees live={live} />
+            <DemoMetrics personaId={personaId} tick={live} />
           </div>
 
           {/* ---------- Правая колонка ---------- */}
@@ -686,7 +698,7 @@ export default function Cabinet() {
         />
       )}
       {modal?.kind === 'shield' && (
-        <ShieldModal initialText={modal.text} onClose={() => setModal(null)} onOpenSos={() => setModal({ kind: 'sos' })} />
+        <ShieldModal initialText={modal.text} personaId={personaId} onClose={() => setModal(null)} onOpenSos={() => setModal({ kind: 'sos' })} />
       )}
       {modal?.kind === 'profile' && (
         <ProfileModal

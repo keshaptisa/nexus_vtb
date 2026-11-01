@@ -28,6 +28,7 @@ def to_state(account) -> dict:
         "last_intercept": account.last_intercept.model_dump(mode="json") if account.last_intercept else None,
         "goals": [g.model_dump(mode="json") for g in account.goals],
         "evidence": account.evidence,
+        "events": account.events,
     }
 
 
@@ -45,6 +46,7 @@ def from_state(state: dict):
         last_intercept=Risk(**intercept) if intercept else None,
         goals=[Goal(**g) for g in state.get("goals", [])],
         evidence=state.get("evidence", {}),
+        events=state.get("events", []),
     )
 
 

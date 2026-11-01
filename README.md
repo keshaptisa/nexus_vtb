@@ -69,7 +69,7 @@ docs/       PLAN.md — план, TASKS.md — кто что делает, api.m
 - Метрики моделей: [ml/reports/metrics.md](ml/reports/metrics.md). Все данные синтетические. Состояние банка (операции, XP, цели, доказательства) сохраняется в PostgreSQL и переживает перезапуск; без базы бэкенд работает в памяти. Сбросить аккаунт — кнопка «сначала» в кабинете.
 
 - **Что осталось до сдачи и кто что делает: [docs/HANDOFF.md](docs/HANDOFF.md)**
-- Видео-демо (2:54): [docs/video/demo_draft.mp4](docs/video/demo_draft.mp4); тексты питча — [docs/pitch/](docs/pitch/)
+- Видео-демо (2:54): [docs/video/demo.mp4](docs/video/demo.mp4); тексты питча — [docs/pitch/](docs/pitch/)
 - Деплой стенда для жюри: [docs/deploy.md](docs/deploy.md)
 - План: [docs/PLAN.md](docs/PLAN.md)
 - Кто что делает по дням: [docs/TASKS.md](docs/TASKS.md)

@@ -104,6 +104,15 @@ export interface ScenarioInfo {
 
 export type InterceptAction = 'cancel' | 'offered_job' | 'call_bank' | 'check_message' | 'continue'
 
+// GET /api/metrics/summary — метрики по текущей сессии демо (docs/business/metrics.md)
+export interface MetricsSummary {
+  events: Record<string, number>
+  intercept_cancel_rate: number | null
+  safe_exit_conversion: number | null
+  median_seconds_to_action: number | null
+  prevented_transits: number
+}
+
 export interface TransferResponse {
   status: 'ok' | 'intercepted'
   risk: Risk

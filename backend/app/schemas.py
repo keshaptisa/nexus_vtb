@@ -194,6 +194,7 @@ class PersonaRequest(BaseModel):
 class ShieldRequest(BaseModel):
     text: str | None = None
     image_base64: str | None = None
+    persona_id: str | None = None  # чей кабинет — только для метрик демо (событие shield_checked)
 
 
 class ShieldResponse(BaseModel):

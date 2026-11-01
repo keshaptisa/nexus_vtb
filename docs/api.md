@@ -149,3 +149,23 @@
 
 У персонажа есть `segment`: `kids` («Детский банк»), `start` («Старт»), `pushkin` (только «Пушкинская карта»), и `pushkin_balance`.
 Новые типы окон сценария: `birthday`, `bridge`, `pushkin`, `goal`; новые `expect.action`: `bridge`, `pushkin`, `goal` (`{goal, target, amount}`).
+
+## Метрики демо
+
+Продукт измеряет себя уже в демо: события пишутся в аккаунт и сохраняются вместе с ним, «сначала» их обнуляет.
+Определения метрик и решения по ним — `docs/business/metrics.md`.
+
+| Метод | Путь | Тело → ответ |
+|---|---|---|
+| POST | `/api/metrics/events` | `{persona_id, name, action?}` → `{ok}`. Только события, которые решаются в интерфейсе: `intercept_cancelled` (`action`: `cancel`, `call_bank`, `offered_job`) и `safe_exit_opened`; остальные имена — 422 |
+| GET | `/api/metrics/summary?persona_id=` | `{events, intercept_cancel_rate, safe_exit_conversion, median_seconds_to_action, prevented_transits}`; без `persona_id` — по всем аккаунтам этой сессии бэкенда; доли `null`, пока нет знаменателя |
+
+Остальные события пишет бэкенд сам:
+
+| Событие | Где |
+|---|---|
+| `intercept_shown` | `POST /api/payments/transfer` → `intercepted` |
+| `intercept_continued` | `POST /api/payments/transfer` с `confirmed: true` после перехвата |
+| `safe_exit_action` | `POST /api/sos/action`, `/api/sos/return-funds` (`action: return_funds`), `/api/sos/pause-outgoing` |
+| `lesson_completed` | `POST /api/progress` с `lesson_id` (первое прохождение) |
+| `shield_checked` | `POST /api/shield/check` с `persona_id` (поле необязательное, нужно только для метрик) |

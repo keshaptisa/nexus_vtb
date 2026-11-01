@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 
 from app import content
 from app.schemas import EventRequest, ProgressRequest, ProgressResponse
+from app.services import metrics
 from app.services.bank import bank
 
 router = APIRouter(prefix="/api", tags=["learning"])
@@ -91,4 +92,6 @@ def progress(req: ProgressRequest):
         return _progress(account)
     account.done.add(key)
     account.xp += xp
+    if req.lesson_id:
+        metrics.log(account, "lesson_completed", lesson_id=req.lesson_id)
     return _progress(account, gained=xp)

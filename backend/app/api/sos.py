@@ -15,6 +15,7 @@ from app.schemas import (
     ReturnFundsResponse,
     SosActionRequest,
 )
+from app.services import metrics
 from app.services.bank import bank
 from app.services.demo import engine
 
@@ -39,6 +40,8 @@ def legal():
 def return_funds(req: ReturnFundsRequest):
     tx = bank.freeze(req.persona_id, req.operation_id)
     engine.publish_for_persona(req.persona_id)
+    if tx:
+        metrics.log(bank.get(req.persona_id), "safe_exit_action", action="return_funds")
     if not tx:
         return ReturnFundsResponse(claim_id="", frozen_amount=0, status="not_found")
     return ReturnFundsResponse(claim_id=f"CLM-{uuid.uuid4().hex[:6].upper()}", frozen_amount=tx.amount, status="frozen")
@@ -79,6 +82,7 @@ def _attachments(persona_id: str) -> str:
 def pause_outgoing(req: PersonaRequest):
     account = bank.get(req.persona_id)
     account.outgoing_paused_until = datetime.now() + timedelta(hours=24)
+    metrics.log(account, "safe_exit_action", action="pause_outgoing")
     return {"paused_until": account.outgoing_paused_until}
 
 
@@ -124,6 +128,7 @@ def draft(persona_id: str, kind: str, branch: str | None) -> str | None:
 
 @router.post("/action")
 def action(req: SosActionRequest):
+    metrics.log(bank.get(req.persona_id), "safe_exit_action", action=req.action)
     engine.publish_for_persona(req.persona_id)
     result = {"action": req.action, "result": ACTION_RESULTS.get(req.action, "Готово")}
     if req.action in ("report_bank", "report_police"):

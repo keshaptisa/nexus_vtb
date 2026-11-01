@@ -7,6 +7,8 @@ import Icon from './Icon'
 import Modal from './Modal'
 
 // ---------- Перехват перевода ----------
+const CONTINUE_PAUSE_S = 5
+
 export function InterceptModal({ result, to, amount, onAction, onClose }: {
   result: TransferResponse
   to: string
@@ -16,11 +18,18 @@ export function InterceptModal({ result, to, amount, onAction, onClose }: {
 }) {
   const [confirming, setConfirming] = useState(false)
   const [legal, setLegal] = useState<LegalItem[]>([])
+  // «Это мои деньги» доступна не сразу: пауза, чтобы не «протыкать» экран по привычке (опрос, H4)
+  const [wait, setWait] = useState(CONTINUE_PAUSE_S)
   const it = result.intercept!
 
   useEffect(() => {
     api.legal().then(setLegal).catch(() => {})
   }, [])
+  useEffect(() => {
+    if (wait <= 0) return
+    const t = setTimeout(() => setWait((w) => w - 1), 1000)
+    return () => clearTimeout(t)
+  }, [wait])
   // Последствия на экране — короткие формулировки из legal.json; находим их записи, чтобы показать источники
   const basis = legal.filter((x) => it.consequences.includes(x.short))
 
@@ -67,42 +76,51 @@ export function InterceptModal({ result, to, amount, onAction, onClose }: {
         <b>{rub(amount)}</b>
         <span className="text-muted"> → {to}</span>
       </div>
-      <p className="mt-4 text-[16px] leading-relaxed">{it.text}</p>
-
-      <div className="mt-5 text-sm font-bold uppercase tracking-wide text-muted">Почему</div>
-      <ul className="mt-2 space-y-1.5">
-        {result.risk.reasons.map((r) => (
-          <li key={r} className="flex gap-2.5 text-[15px]">
-            <span className="mt-2 size-1.5 shrink-0 rounded-full bg-risk-high" />
-            {r}
-          </li>
-        ))}
-      </ul>
+      <p className="mt-4 text-[17px] font-semibold leading-snug">{it.text}</p>
 
       {it.consequences.length > 0 && (
-        <div className="mt-5 rounded-2xl bg-risk-high/8 p-4" style={{ background: 'color-mix(in srgb, var(--color-risk-high) 8%, var(--color-surface))' }}>
-          <div className="text-sm font-bold">Чем это грозит</div>
-          <ul className="mt-2 space-y-1 text-[14px]">
-            {it.consequences.map((c) => <li key={c}>— {c}</li>)}
-          </ul>
-          <div className="mt-2 text-xs text-muted">Это не юридическая консультация.</div>
-          <LegalNote items={basis} />
-        </div>
+        <ul className="mt-3 space-y-1 rounded-2xl p-3.5 text-[14px] leading-snug" style={{ background: 'color-mix(in srgb, var(--color-risk-high) 8%, var(--color-surface))' }}>
+          {it.consequences.map((c) => <li key={c}>— {c}</li>)}
+        </ul>
       )}
 
-      <div className="mt-6 grid gap-2">
+      {/* По итогам опроса: «много текста» — причины и основание свёрнуты, главное видно сразу */}
+      <details className="group mt-3 rounded-2xl px-4 py-3 ring-1 ring-ink/10">
+        <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold">
+          Почему банк остановил перевод?
+          <Icon name="chevron" size={16} className="text-muted transition group-open:rotate-90" />
+        </summary>
+        <ul className="mt-3 space-y-1.5">
+          {result.risk.reasons.map((r) => (
+            <li key={r} className="flex gap-2.5 text-[15px]">
+              <span className="mt-2 size-1.5 shrink-0 rounded-full bg-risk-high" />
+              {r}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-3 text-xs text-muted">Это не юридическая консультация.</div>
+        <LegalNote items={basis} />
+      </details>
+
+      <div className="mt-5 grid gap-2">
         <button className="btn-primary" onClick={() => onAction('cancel')}>Отменить перевод</button>
-        <button className="btn-ghost" onClick={() => onAction('offered_job')}>
-          <Icon name="lifebuoy" size={18} /> Мне предложили подработку
-        </button>
-        <button className="btn-ghost" onClick={() => onAction('call_bank')}>
-          <Icon name="phone" size={18} /> Позвонить в банк
-        </button>
-        <button className="btn-ghost" onClick={() => onAction('check_message')}>
-          <Icon name="shield" size={18} /> Проверить сообщение
-        </button>
-        <button className="mt-1 text-sm font-semibold text-muted hover:text-ink" onClick={() => setConfirming(true)}>
-          Это мои деньги, продолжить
+        <div className="grid gap-2 sm:grid-cols-3">
+          <button className="btn-ghost text-[14px]" onClick={() => onAction('offered_job')}>
+            <Icon name="lifebuoy" size={17} /> Мне предложили подработку
+          </button>
+          <button className="btn-ghost text-[14px]" onClick={() => onAction('call_bank')}>
+            <Icon name="phone" size={17} /> Позвонить в банк
+          </button>
+          <button className="btn-ghost text-[14px]" onClick={() => onAction('check_message')}>
+            <Icon name="shield" size={17} /> Проверить сообщение
+          </button>
+        </div>
+        <button
+          className="mt-1 text-sm font-semibold text-muted enabled:hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={wait > 0}
+          onClick={() => setConfirming(true)}
+        >
+          {wait > 0 ? `Это мои деньги — можно через ${wait} с` : 'Это мои деньги, продолжить'}
         </button>
       </div>
     </Modal>
@@ -301,8 +319,9 @@ export function SosModal({ persona, txs, initialBranch, onClose, onChanged, onCo
 }
 
 // ---------- Проверка сообщения (Щит) ----------
-export function ShieldModal({ initialText = '', onClose, onOpenSos }: {
+export function ShieldModal({ initialText = '', personaId, onClose, onOpenSos }: {
   initialText?: string
+  personaId?: string
   onClose: () => void
   onOpenSos: () => void
 }) {
@@ -316,7 +335,7 @@ export function ShieldModal({ initialText = '', onClose, onOpenSos }: {
     setBusy(true)
     setError('')
     try {
-      setResult(await api.shield(text))
+      setResult(await api.shield(text, personaId))
     } finally {
       setBusy(false)
     }
@@ -330,7 +349,7 @@ export function ShieldModal({ initialText = '', onClose, onOpenSos }: {
     setError('')
     setBusy(true)
     try {
-      const r = await api.shieldImage(dataUrl)
+      const r = await api.shieldImage(dataUrl, personaId)
       setResult(r)
       if (r.recognized_text) setText(r.recognized_text)
     } catch (e) {

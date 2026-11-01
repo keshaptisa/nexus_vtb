@@ -5,6 +5,7 @@ import type {
   LegalItem,
   Lesson,
   LiveRisk,
+  MetricsSummary,
   OperationResponse,
   Persona,
   Progress,
@@ -67,8 +68,9 @@ export const api = {
   sosAction: (personaId: string, action: string, branch?: string) =>
     post<{ result: string; draft?: string | null }>('/api/sos/action', { persona_id: personaId, action, branch }),
 
-  shield: (text: string) => post<ShieldResult>('/api/shield/check', { text }),
-  shieldImage: (imageBase64: string) => post<ShieldResult>('/api/shield/check', { image_base64: imageBase64 }),
+  shield: (text: string, personaId?: string) => post<ShieldResult>('/api/shield/check', { text, persona_id: personaId }),
+  shieldImage: (imageBase64: string, personaId?: string) =>
+    post<ShieldResult>('/api/shield/check', { image_base64: imageBase64, persona_id: personaId }),
   quest: (id: string) => request<Quest>(`/api/quest/${id}`),
   event: (personaId: string, type: string) =>
     post<{ lesson: Lesson | null }>('/api/events', { persona_id: personaId, type }),
@@ -89,6 +91,11 @@ export const api = {
   pushkinOffers: () => request<string[]>('/api/pushkin/offers'),
   pushkinActivate: (personaId: string) =>
     post<{ persona: Persona; offers: string[]; message: string }>(`/api/pushkin/${personaId}/activate`),
+
+  metricsSummary: (personaId: string) => request<MetricsSummary>(`/api/metrics/summary?persona_id=${personaId}`),
+  // Решения, которые принимаются в интерфейсе без запроса к банку: отмена после перехвата, открытие «Безопасного выхода»
+  metricEvent: (personaId: string, name: 'intercept_cancelled' | 'safe_exit_opened', action?: string) =>
+    post<{ ok: boolean }>('/api/metrics/events', { persona_id: personaId, name, action }),
 
   assistant: (personaId: string, message: string, history: { role: string; text: string }[]) =>
     post<AssistantReply>('/api/assistant/chat', { persona_id: personaId, message, history }),

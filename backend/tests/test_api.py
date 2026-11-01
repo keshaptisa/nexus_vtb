@@ -140,7 +140,7 @@ def test_keyword_baseline_for_eval_is_available():
 
 
 def test_intercept_screen_is_short_and_offers_call():
-    # Итоги опроса: экран перегружен текстом, 36% хотят звонок банка, возраст ответственности знают 24%
+    # Итоги опроса: экран перегружен текстом, возраст ответственности знают 45% — он первым
     client.post("/api/personas/artem/reset")
     client.post("/api/payments/topup", json={"persona_id": "artem", "sender": "Неизвестный", "amount": 30000})
     r = client.post("/api/payments/transfer", json={"persona_id": "artem", "to": "+79990001234", "amount": 27000}).json()
@@ -220,3 +220,12 @@ def test_pushkin_buyout_offer_opens_lesson():
 def test_shield_catches_short_slang_recruitment():
     r = client.post("/api/shield/check", json={"text": "Подработка, придёт 30к, перешли 27 на карту, 3к твои"})
     assert r.json()["scheme"] == "drop_recruitment" and r.json()["risk"] == "high"
+
+
+def test_intercept_for_under_16_starts_with_what_threatens_now():
+    # Младше 16 строка «С 16 лет — уголовная ответственность» читается как «мне можно»
+    client.post("/api/personas/lev/reset")
+    client.post("/api/payments/topup", json={"persona_id": "lev", "sender": "Неизвестный", "amount": 30000})
+    r = client.post("/api/payments/transfer", json={"persona_id": "lev", "to": "+79990001234", "amount": 27000}).json()
+    assert r["status"] == "intercepted"
+    assert r["intercept"]["consequences"][0].startswith("До 16 лет")

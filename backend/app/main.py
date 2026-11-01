@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import assistant, channels, demo, learning, payments, shield, sos
+from app.api import assistant, channels, demo, learning, metrics, payments, shield, sos
 from app.services import store
 from app.services.bank import bank
 
@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for module in (demo, payments, sos, shield, learning, assistant, channels):
+for module in (demo, payments, sos, shield, learning, assistant, channels, metrics):
     app.include_router(module.router)
 
 

@@ -42,6 +42,8 @@ class Account:
     goals: list[Goal] = field(default_factory=list)  # цели и копилка
     # Доказательства к обращениям: номер пакета → число скриншотов. Сами картинки в демо не храним
     evidence: dict[str, int] = field(default_factory=dict)
+    # Продуктовые события для метрик демо (services/metrics.py)
+    events: list[dict] = field(default_factory=list)
 
     @property
     def balance(self) -> float:
@@ -87,6 +89,10 @@ class FakeBank:
         self._accounts[persona_id] = account
         self._touched.add(persona_id)
         return account
+
+    def loaded(self) -> list[Account]:
+        """Аккаунты, которые открывали в этой сессии бэкенда."""
+        return list(self._accounts.values())
 
     def get(self, persona_id: str) -> Account:
         if persona_id not in self._accounts:

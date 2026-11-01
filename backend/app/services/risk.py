@@ -182,7 +182,7 @@ def live_risk(account: Account) -> LiveRisk:
 
     frozen = [t for t in account.transactions if t.frozen]
     if frozen:
-        signals.append(f"Заморожено {_rub(sum(t.amount for t in frozen))} — банк вернёт отправителю")
+        signals.append(f"Заморожено {_rub(sum(t.amount for t in frozen))} — заявление на возврат отправителю")
         score = min(score, 0.3)
 
     score = round(min(score, 1.0), 2)
