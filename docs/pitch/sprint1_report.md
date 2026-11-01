@@ -33,7 +33,7 @@
 
 ## Ссылки
 
-- Презентация: [ссылка на Старт_презентация.pdf на Яндекс Диске или Google Drive, доступ по ссылке]
-- Демо: http://87.251.77.252 · видео: https://github.com/ariasokuss/nexus_start_for_vtb/blob/main/docs/video/demo_draft.mp4
-- Исходный код: https://github.com/ariasokuss/nexus_start_for_vtb/tree/sprint-1 (после того как поставим тег)
-- Аналитика: [ссылка на папку на диске: описание проекта, финмодель, оценка рынка, план внедрения и развития]
+- Презентация: `Старт_презентация.pptx` в корне репозитория (тег `sprint-1`); копия .pptx и .pdf — на диске с материалами
+- Демо: http://87.251.77.252 · видео 2:54: https://github.com/keshaptisa/nexus_vtb/blob/sprint-1/docs/video/demo.mp4
+- Исходный код: https://github.com/keshaptisa/nexus_vtb/tree/sprint-1
+- Аналитика: папка на диске — описание проекта, бизнес-модель и финмодель (.xlsx), рынок и конкуренты, план внедрения, гипотезы и метрики, исследование, модели
