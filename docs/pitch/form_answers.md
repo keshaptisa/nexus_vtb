@@ -53,12 +53,12 @@
 ## Ссылка на доступное демо или видео-демонстрацию
 
 Стенд: http://87.251.77.252
-Видео 2:54: https://github.com/keshaptisa/nexus_vtb/blob/sprint-1/docs/video/demo.mp4
-Код: https://github.com/keshaptisa/nexus_vtb/tree/sprint-1
+Видео 2:58: https://github.com/keshaptisa/nexus_vtb/blob/sprint-1-final/docs/video/demo_montage.mp4
+Код: https://github.com/keshaptisa/nexus_vtb/tree/sprint-1-final
 
 ## Ссылка на презентацию
 
-https://github.com/keshaptisa/nexus_vtb/blob/sprint-1/%D0%A1%D1%82%D0%B0%D1%80%D1%82_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx
+https://github.com/keshaptisa/nexus_vtb/blob/sprint-1-final/%D0%A1%D1%82%D0%B0%D1%80%D1%82_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx
 
 ## Первичная оценка ценности
 

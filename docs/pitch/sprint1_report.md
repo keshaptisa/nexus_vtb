@@ -34,6 +34,6 @@
 ## Ссылки
 
 - Презентация: `Старт_презентация.pptx` в корне репозитория (тег `sprint-1`); копия .pptx и .pdf — на диске с материалами
-- Демо: http://87.251.77.252 · видео 2:54: https://github.com/keshaptisa/nexus_vtb/blob/sprint-1/docs/video/demo.mp4
-- Исходный код: https://github.com/keshaptisa/nexus_vtb/tree/sprint-1
+- Демо: http://87.251.77.252 · видео 2:58: https://github.com/keshaptisa/nexus_vtb/blob/sprint-1-final/docs/video/demo_montage.mp4
+- Исходный код: https://github.com/keshaptisa/nexus_vtb/tree/sprint-1-final
 - Аналитика: папка на диске — описание проекта, бизнес-модель и финмодель (.xlsx), рынок и конкуренты, план внедрения, гипотезы и метрики, исследование, модели
