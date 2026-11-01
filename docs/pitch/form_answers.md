@@ -37,7 +37,7 @@
 
 ## Текущая стадия
 
-Работающий MVP на стенде http://87.251.77.252. На главной комикс о том, что происходит в 14 лет, дальше пять сценариев:
+Работающий MVP запускается локально одной командой (`docker compose up`, инструкция в README). На главной комикс о том, что происходит в 14 лет, дальше пять сценариев:
 - Артём, 16: незнакомец присылает деньги, перевод перехвачен, «Безопасный выход»;
 - Дима, 17: деньги уже переслал, ему угрожают;
 - Катя, 19: первая зарплата, урок про НДФЛ, копилка;
@@ -52,13 +52,12 @@
 
 ## Ссылка на доступное демо или видео-демонстрацию
 
-Стенд: http://87.251.77.252
-Видео 2:58: https://github.com/keshaptisa/nexus_vtb/blob/sprint-1-final/docs/video/demo_montage.mp4
-Код: https://github.com/keshaptisa/nexus_vtb/tree/sprint-1-final
+Видео 2:58: https://github.com/keshaptisa/nexus_vtb/blob/sprint-1/docs/video/demo_montage.mp4
+Код: https://github.com/keshaptisa/nexus_vtb/tree/sprint-1
 
 ## Ссылка на презентацию
 
-https://github.com/keshaptisa/nexus_vtb/blob/sprint-1-final/%D0%A1%D1%82%D0%B0%D1%80%D1%82_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx
+https://github.com/keshaptisa/nexus_vtb/blob/sprint-1/%D0%A1%D1%82%D0%B0%D1%80%D1%82_%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pptx
 
 ## Первичная оценка ценности
 
