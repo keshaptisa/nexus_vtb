@@ -158,7 +158,14 @@ def eval_shield() -> list[str]:
     files = sorted(DATA.glob("messages_test_manual_*.csv"))
     manual = pd.concat([pd.read_csv(f) for f in files], ignore_index=True) if files else pd.DataFrame()
     manual = manual.dropna(subset=["text", "label"]) if not manual.empty else manual
-    out += ["", "### Ручной тест команды (написан без LLM)", ""]
+    # Финальная модель Щита обучена и на ручных сообщениях, поэтому проверять её на них нельзя.
+    # Честную оценку (учим на двух авторах, проверяем на третьем) даёт eval_manual.py — его раздел переносим как есть.
+    previous = REPORTS / "metrics.md"
+    head = "### Ручной тест команды (написан без LLM)"
+    if previous.exists() and head in (text := previous.read_text(encoding="utf-8")):
+        kept = text.split(head, 1)[1].split("## 3.", 1)[0].strip()
+        return out + ["", head, kept, ""]
+    out += ["", head, ""]
     if len(manual) < 30:
         out.append(f"**Ещё не собран** ({len(manual)} из 150 сообщений). Это главная проверка — до неё цифрам выше доверять нельзя.")
     else:

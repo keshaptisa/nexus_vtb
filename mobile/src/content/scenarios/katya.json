@@ -1,0 +1,108 @@
+{
+  "persona_id": "katya",
+  "title": "Первая зарплата и контекстные уроки",
+  "steps": [
+    {
+      "id": "salary",
+      "title": "Первая зарплата",
+      "hint": "Пришла зарплата — появляется урок про НДФЛ",
+      "chat": [],
+      "bank_events": [
+        {
+          "type": "incoming",
+          "amount": 17400,
+          "counterparty": "ООО «Кофейня»",
+          "is_new_counterparty": false
+        }
+      ],
+      "expect": {
+        "action": "event",
+        "type": "salary"
+      },
+      "popup": {
+        "type": "lesson",
+        "title": "Пришла первая зарплата",
+        "text": "17 400 ₽ от ООО «Кофейня». В договоре было 20 000 ₽ — разберёмся, куда делась разница."
+      }
+    },
+    {
+      "id": "goal",
+      "title": "Копилка",
+      "hint": "Правило «сначала заплати себе»: Катя откладывает 10% зарплаты на наушники",
+      "chat": [],
+      "bank_events": [],
+      "expect": {
+        "action": "goal",
+        "goal": "Наушники",
+        "target": 6000,
+        "amount": 1740
+      },
+      "popup": {
+        "type": "goal",
+        "title": "Отложить 10% зарплаты?",
+        "text": "Правило «сначала заплати себе»: 1 740 ₽ — в копилку «Наушники». Так цель приблизится почти на треть."
+      }
+    },
+    {
+      "id": "subscription",
+      "title": "Третья подписка",
+      "hint": "Катя оформляет третью подписку — урок о том, сколько они стоят за год",
+      "chat": [],
+      "bank_events": [
+        {
+          "type": "outgoing",
+          "amount": 249,
+          "counterparty": "Подписка на музыку",
+          "channel": "card",
+          "category": "subscriptions",
+          "is_new_counterparty": false
+        }
+      ],
+      "expect": {
+        "action": "event",
+        "type": "subscription"
+      },
+      "popup": {
+        "type": "lesson",
+        "title": "Это уже третья подписка",
+        "text": "Кино, музыка и ещё одна музыка — 747 ₽ в месяц. Посчитаем, сколько это за год."
+      }
+    },
+    {
+      "id": "overspend",
+      "title": "Перерасход",
+      "hint": "Траты на доставку выше нормы — урок про бюджет 50/30/20",
+      "chat": [],
+      "bank_events": [
+        {
+          "type": "outgoing",
+          "amount": 1450,
+          "counterparty": "Доставка еды",
+          "channel": "card",
+          "category": "food",
+          "is_new_counterparty": false
+        }
+      ],
+      "expect": {
+        "action": "event",
+        "type": "overspend"
+      },
+      "popup": {
+        "type": "lesson",
+        "title": "Доставка еды — выше нормы",
+        "text": "В этом месяце на доставку ушло на 40% больше обычного. Есть простое правило, как этого избежать."
+      }
+    },
+    {
+      "id": "done",
+      "title": "Итог",
+      "hint": "Катя прошла три контекстных урока и получила XP",
+      "chat": [],
+      "bank_events": [],
+      "popup": {
+        "type": "done",
+        "text": "Вы разобрались, куда уходит 13% зарплаты, сколько стоят подписки за год и как делить деньги по правилу 50/30/20."
+      }
+    }
+  ]
+}

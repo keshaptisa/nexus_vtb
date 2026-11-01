@@ -75,6 +75,22 @@ python src/check_manual.py dasha
 - Для скоринга обязательно считаем долю ложных перехватов у «нормальных» подростков.
 - В отчёте честно пишем, что данные синтетические, и как модель дообучится на данных банка.
 
+## Ложные перехваты по людям и самозанятые
+
+```bash
+python src/eval_clients.py          # → reports/false_intercepts_clients.md: у какой доли честных клиентов был хотя бы один перехват
+python src/eval_self_employed.py    # → reports/self_employed.md: SHAP по ложным перехватам самозанятых, «было/стало»,
+                                    #   порог для самозанятых → thr_high_self_employed в backend/app/ml/models/risk_meta.json
+```
+После изменения признаков в `backend/app/ml/features.py`: `train_risk.py` → `eval_self_employed.py` → `eval.py` →
+`eval_clients.py`, затем выгрузка модели в приложение (`mobile/scripts/export_risk_model.py`) и сверка `npm run check:engine`.
+
+## Щит на реальных текстах 2026 года
+
+`data/messages_test_real_2026.csv` — тексты вербовки из открытых источников, у каждого ссылка (`source`) и дата (`date`),
+остальные столбцы — как у ручного теста. `python src/eval_real.py` → `reports/shield_real.md`. Пока текстов меньше 30,
+метрики не считаются. В обучение эти тексты не попадают.
+
 ## Дополнительный тест Щита (не ручной)
 
 `data/messages_test_extra.csv` — 90 синтетических сообщений с новыми формулировками вне шаблонов генератора

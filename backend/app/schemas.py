@@ -28,6 +28,7 @@ class Persona(BaseModel):
     # kids — «Детский банк» (6–13), start — раздел «Старт» (14–22), pushkin — есть только «Пушкинская карта» ВТБ
     segment: Literal["kids", "start", "pushkin"] = "start"
     pushkin_balance: float | None = None  # остаток по «Пушкинской карте», если она есть
+    self_employed: bool = False  # подтверждённый статус НПД — свой порог перехвата (ml/reports/self_employed.md)
     balance: float
     description: str = ""
 

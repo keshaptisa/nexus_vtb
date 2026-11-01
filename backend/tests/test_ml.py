@@ -33,6 +33,23 @@ def test_features_for_normal_transfer():
     assert rule_score(f)[0] < 0.7
 
 
+def test_new_features_count_recipient_and_regular_income():
+    history = [_tx(3 * 1440, 4000, "in", "Клиент 1", new=True), _tx(2 * 1440, 6000, "in", "Клиент 2", new=True),
+               _tx(2 * 1440 - 300, 3000, "out", "Поставщик"), _tx(60, 5000, "in", "Клиент 3", new=True)]
+    f = build_features(history, Transfer(ts=NOW, amount=2500, to="Поставщик"), client_age=20, card_age_days=700)
+    assert f["recipient_transfers_30d"] == 1
+    assert f["stranger_income_days_30d"] == 3
+    assert f["stranger_median_amount_30d"] == 5000
+
+
+def test_self_employed_threshold_is_softer():
+    if not risk_model.available():
+        return
+    history = [_tx(2, 30000, "in", "Иван К.", new=True)]
+    f = build_features(history, Transfer(ts=NOW, amount=12000, to="+79990001234"), client_age=20, card_age_days=700)
+    assert risk_model.predict(f, self_employed=True)[0] <= risk_model.predict(f)[0]
+
+
 def test_api_scale_keeps_thresholds():
     assert risk_model.to_api_scale(0.3, 0.1, 0.3) == 0.7
     assert risk_model.to_api_scale(0.1, 0.1, 0.3) == 0.4

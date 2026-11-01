@@ -23,6 +23,8 @@ ml/data/*
 # ручной тест Щита (150 сообщений от команды) коммитим
 !ml/data/messages_test_manual_*.csv
 !ml/data/messages_test_extra_*.csv
+# реальные тексты вербовки из открытых источников (у каждого — ссылка)
+!ml/data/messages_test_real_*.csv
 ml/models/*
 !ml/models/.gitkeep
 

@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "Старт",
+    "slug": "start-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "startbank",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#120b2e",
+    "ios": {
+      "bundleIdentifier": "com.nexus.startbank",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Чтобы приложить скриншоты переписки к обращению в банк."
+      }
+    },
+    "android": {
+      "package": "com.nexus.startbank",
+      "adaptiveIcon": {
+        "backgroundColor": "#5b3df5",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "name": "Старт — молодёжный банк",
+      "themeColor": "#5b3df5"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#120b2e",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 120
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Чтобы приложить скриншоты переписки к обращению в банк."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

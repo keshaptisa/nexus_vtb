@@ -9,6 +9,7 @@ is_new_counterparty, channel и (необязательно) frozen: подхо�
 """
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from statistics import median
 
 FEATURES = [
     "minutes_since_stranger_incoming",   # минут с последнего зачисления от незнакомца (нет → NO_INCOMING_MINUTES)
@@ -22,6 +23,9 @@ FEATURES = [
     "turnover_spike",                    # оборот за 24ч / средний дневной оборот за 30д
     "is_night",                          # 00:00–05:59
     "cash_withdrawal_after_incoming",    # снятие наличных после зачисления от незнакомца (24ч)
+    "recipient_transfers_30d",           # сколько раз за 30д уже переводили этому получателю (постоянный поставщик ≠ новые реквизиты дропа)
+    "stranger_income_days_30d",          # в сколько разных дней за 30д приходили деньги от незнакомцев (регулярная выручка)
+    "stranger_median_amount_30d",        # медианное зачисление от незнакомца за 30д (оплаты заказов мельче транзитов)
 ]
 
 NO_INCOMING_MINUTES = 7 * 24 * 60
@@ -99,12 +103,19 @@ def build_features(history, transfer: Transfer, client_age: int, card_age_days: 
     turnover_24h = transfer.amount
     turnover_30d = 0.0
     cash_after = False
+    to_recipient_30d = 0
+    stranger_days_30d, stranger_amounts_30d = set(), []
 
     for tx in history:
         known.add(tx.counterparty)
         if tx.ts < month_ago:
             continue
         turnover_30d += tx.amount
+        if tx.direction == "out" and tx.counterparty == transfer.to:
+            to_recipient_30d += 1
+        if _is_stranger_incoming(tx):
+            stranger_days_30d.add(tx.ts.date())
+            stranger_amounts_30d.append(tx.amount)
         if tx.ts >= day_ago:
             turnover_24h += tx.amount
         if _is_stranger_incoming(tx) and tx.ts >= week_ago:
@@ -136,6 +147,9 @@ def build_features(history, transfer: Transfer, client_age: int, card_age_days: 
         "turnover_spike": round(turnover_24h / mean_daily, 2),
         "is_night": int(now.hour < 6),
         "cash_withdrawal_after_incoming": int(cash_after),
+        "recipient_transfers_30d": to_recipient_30d,
+        "stranger_income_days_30d": len(stranger_days_30d),
+        "stranger_median_amount_30d": round(median(stranger_amounts_30d), 0) if stranger_amounts_30d else 0.0,
     }
 
 

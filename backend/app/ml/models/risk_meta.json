@@ -10,12 +10,16 @@
     "card_age_days",
     "turnover_spike",
     "is_night",
-    "cash_withdrawal_after_incoming"
+    "cash_withdrawal_after_incoming",
+    "recipient_transfers_30d",
+    "stranger_income_days_30d",
+    "stranger_median_amount_30d"
   ],
   "thr_high": 0.3,
   "thr_medium": 0.1,
-  "trained_at": "2026-10-07T23:04:30",
-  "best_iteration": 534,
+  "trained_at": "2026-11-01T17:28:36",
+  "best_iteration": 595,
   "data": "синтетика ml/src/gen_transactions.py, seed=42",
-  "split_seed": 42
+  "split_seed": 42,
+  "thr_high_self_employed": 0.5
 }

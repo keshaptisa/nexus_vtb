@@ -150,7 +150,7 @@ def score_transfer(account: Account, to: str, amount: float) -> Risk:
     """Этап 2: не пытаются ли переслать подозрительные деньги дальше."""
     features = transfer_features(account, to, amount)
     if risk_model.available():
-        score, reasons = risk_model.predict(features)
+        score, reasons = risk_model.predict(features, self_employed=account.persona.self_employed)
     else:
         score, reasons = rule_score(features)
     if score >= MEDIUM:

@@ -45,14 +45,20 @@ def to_api_scale(p: float, thr_medium: float, thr_high: float) -> float:
     return API_HIGH + (1 - API_HIGH) * (p - thr_high) / (1 - thr_high)
 
 
-def predict(features: dict, top: int = 3) -> tuple[float, list[str]]:
-    """→ (score в шкале API, причины для экрана перехвата из SHAP)."""
+def predict(features: dict, top: int = 3, self_employed: bool = False) -> tuple[float, list[str]]:
+    """→ (score в шкале API, причины для экрана перехвата из SHAP).
+
+    У подтверждённых самозанятых порог перехвата выше (thr_high_self_employed): оплата поставщику
+    после выручки похожа на транзит. Между обычным порогом и порогом самозанятых — «medium»,
+    то есть предупреждение вместо остановки перевода.
+    """
     from catboost import Pool
 
     model, meta = _load()
     row = [[features[name] for name in FEATURES]]
     proba = float(model.predict_proba(row)[0][1])
-    score = to_api_scale(proba, meta["thr_medium"], meta["thr_high"])
+    thr_high = meta.get("thr_high_self_employed", meta["thr_high"]) if self_employed else meta["thr_high"]
+    score = to_api_scale(proba, meta["thr_medium"], thr_high)
 
     shap = model.get_feature_importance(Pool(row, feature_names=FEATURES), type="ShapValues")[0][:-1]
     picked = []
