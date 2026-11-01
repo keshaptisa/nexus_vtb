@@ -137,7 +137,7 @@ docs/       исследование, бизнес-модель, материа�
 | Конкуренты | [docs/research/competitors.md](docs/research/competitors.md) |
 | Доказательная база и источники | [docs/research/evidence.md](docs/research/evidence.md) |
 | Проверка юридического контента | [docs/research/legal_check.md](docs/research/legal_check.md) |
-| План интервью | [docs/research/interviews/](docs/research/interviews/) |
+| Интервью: план, ТЗ, записи и сводка | [docs/research/interviews/](docs/research/interviews/) |
 | Бизнес-модель, пилот, риски | [docs/business/business_model.md](docs/business/business_model.md) |
 | Финансовая модель (3 сценария) | [docs/business/finmodel.xlsx](docs/business/finmodel.xlsx) |
 | Гипотезы пилота | [docs/business/hypotheses.md](docs/business/hypotheses.md) |
